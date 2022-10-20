@@ -1,0 +1,17 @@
+contourpy==1.0.5
+cycler==0.11.0
+fonttools==4.37.4
+imageio==2.22.2
+kiwisolver==1.4.4
+networkx==2.8.7
+numpy==1.23.4
+packaging==21.3
+Pillow==9.2.0
+pyparsing==3.0.9
+python-dateutil==2.8.2
+PyWavelets==1.4.1
+scikit-image==0.19.3
+scipy==1.9.2
+six==1.16.0
+tifffile==2022.10.10
+toml==0.10.2
