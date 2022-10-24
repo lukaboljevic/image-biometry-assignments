@@ -3,6 +3,7 @@ from skimage.feature import local_binary_pattern
 import numpy as np
 from utils import generate_neighbor_steps, cyclic_shift_to_smallest, read_dataset, inside
 from random import sample
+from tqdm import tqdm
 
 
 def pixels(images):
@@ -42,7 +43,8 @@ def lbp(images, R=1, pattern_length=0, local_region_step=1,
         raise ValueError(
             "Step size for local regions invalid - must be between 1 and 2*R + 1.")
 
-    for img in images:
+    print("LBP:")
+    for img in tqdm(images):
         all_pixels = img.load()
         converted_pixels = []
 
@@ -85,7 +87,8 @@ def calculate_rank1_accuracy(vectors, classes, distance_metric):
     correct = 0
     distances_pairwise = cdist(vectors, vectors, distance_metric)
 
-    for i in range(total):
+    print("Vector matching:")
+    for i in tqdm(range(total)):
         closest_value = 10000000
         closest_index = -1
         for j in range(len(distances_pairwise[0])):
@@ -130,15 +133,15 @@ def compare_with_scikit(image_size, distance_metric, hist=True):
 
 
 image_size = (128, 128)
-R = 1
+R = 2
 P = 8 * R
-region_step = 2*R + 1
-hist_ind = False
-cyclic_shifting = False
+region_step = 1
+hist = True
+cyclic_shifting = True
 
 images, classes = read_dataset(image_size)
 vectors = lbp(images, R=R, pattern_length=P, local_region_step=region_step,
-              hist=hist_ind, cyclic_shifting=cyclic_shifting)
+              hist=hist, cyclic_shifting=cyclic_shifting)
 print(calculate_rank1_accuracy(vectors, classes, "euclidean"))
 
 # compare_with_scikit("euclidean")
