@@ -44,8 +44,28 @@ def cyclic_shift_to_smallest(binary_string):
         binary_string = binary_string[1:] + binary_string[0]
         numbers.append(binary_string)
 
-    numbers = map(lambda x: int(x, 2), numbers)
-    return min(numbers)
+    decimal_numbers = list(map(lambda x: int(x, 2), numbers))
+    return min(decimal_numbers)
+
+
+def count_transitions(binary_string):
+    """ 
+    Counts the number of 0-1 and 1-0 transitions for
+    the purpose of uniform LBP
+    """
+    length = len(binary_string)
+    total = 0
+
+    for i in range(length - 1):
+        bits = binary_string[i:i+2]
+        if bits == "01" or bits == "10":
+            total += 1
+    
+    final_bits = binary_string[length-1] + binary_string[0]
+    if final_bits == "01" or final_bits == "10":
+        total += 1
+
+    return total
 
 
 def generate_neighbor_steps(R):

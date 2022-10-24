@@ -1,0 +1,42 @@
+R = radius of circle
+P = neighbour set size
+
+gc - gray value of center pixel
+g0, ... g_P-1 - gray values of P equally spaced neighbor pixels on a circle
+    of radius R (they form what the authors call a circularly symmetric
+    neighbor set)
+
+If coordinates of gc are 0,0, then the coordinates of the others points 
+g_p are (-Rsin(2*pi*p/P), Rcos(2*pi*p/P)). The coordinates which are not 
+exactly in the center of pixels are estimated by interpolation (this 
+is theoretical, we don't do it like this in practice)
+
+To begin with, we subtract, the gray value of the center from the gray values 
+of the neighbors, i.e. g0 - gc, g1 - gc, ... g_P-1 - gc. We take note what is the 
+sign of the result: if gi - gc >= 0, we say it's 1, otherwise we say it's 0 
+(i.e. this pixel now "equals" 0 or 1)
+
+The paper then assigns a factor of 2^i to every sign(gi - gc), which in essence
+transforms this neighborhood into a binary number. It starts building the 
+binary number from the pixel that's to the far right of the center, and it 
+proceeds counter-clockwise. 
+
+We also need to do cyclic shifting to the smallest possible number, 
+to not worry about the possibility of the image being rotated (rotational
+invariance)!
+
+Uniform LBP:
+    After constructing the baseline local binary pattern (so, the one that's
+    not cyclically shifted), we count the number of 0-1 and 1-0 transitions.
+    For example, 10000100 has 4 such transitions (you include the transition
+    from the rightmost 0 to the leftmost 1), 11111110 has 2, while 
+    11011011 has 4 such transitions.
+
+    Now, if the baseline local binary pattern has AT MOST (i.e. <=) 2 such
+    transitions, then, the assigned value to the observed pixel is the 
+    amount of 1s it contains, otherwise, if it has more than 2 such transitions,
+    the assigned value is P+1.
+
+    Notice that here, there is no cyclic shifting needed, because the number of 
+    transitions is preserved when cyclic shifting, hence uniform LBP is automatically
+    rotationally invariant.
