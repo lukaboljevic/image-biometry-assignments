@@ -10,7 +10,8 @@ def pixels(images):
     return list(img.getdata() for img in images)
 
 
-def lbp(images, R=1, pattern_length=0, hist=False, uniform=False, local_region_step=1):
+def lbp(images, R=1, pattern_length=0, local_region_step=1,
+        hist=False, cyclic_shifting=False, uniform=False):
     """
     LBP ... 
     """
@@ -19,47 +20,50 @@ def lbp(images, R=1, pattern_length=0, hist=False, uniform=False, local_region_s
     width, height = images[0].size
 
     if pattern_length > 8*R:
-        raise ValueError("Binary pattern length too large - cannot be more than 8*R")
+        raise ValueError(
+            "Binary pattern length too large - cannot be more than 8*R")
 
-    # If P = pattern_length = 0, then we take all 8*R pixels around the center i.e.
-    # P = 8*R and we do not touch the neighbor_indices list.
-    # Otherwise, if it's > 0, then it determines the length of the pattern (duh). 
-    # If it's < 8*R, then it's basically the sample size for the neighborhood.
-    # We can of course sample between 1 and 8*R neighbors.
+    # If P = pattern_length = 0, then we take all 8*R pixels around the
+    # center i.e. P = 8*R and we do not touch the neighbor_indices list.
+    # Otherwise, if it's > 0, then it determines the length of the pattern
+    # (duh). If it's < 8*R, then it's basically the sample size for the
+    # neighborhood. We can of course sample between 1 and 8*R neighbors.
     if pattern_length > 0:
-        # I'm sampling indices, rather than actual elements, so the 
+        # I'm sampling indices, rather than actual elements, so the
         # operation of collecting neighbors i.e. building a binary number,
-        # starting to the right of the center pixel, in a counter-clockwise 
+        # starting to the right of the center pixel, in a counter-clockwise
         # notion, is preserved
-        l = len(neighbor_steps)
-        indices = sorted(sample(range(l), pattern_length))
+        length = len(neighbor_steps)
+        indices = sorted(sample(range(length), pattern_length))
         neighbor_steps = [neighbor_steps[index] for index in indices]
 
     # Validate the value for the step size
     if local_region_step < 1 or local_region_step > 2*R + 1:
-        raise ValueError("Step size for local regions invalid - must be between 1 and 2*R + 1.")
+        raise ValueError(
+            "Step size for local regions invalid - must be between 1 and 2*R + 1.")
 
     for img in images:
         all_pixels = img.load()
         converted_pixels = []
 
-        for x in range(R, width-R):
-            for y in range(R, height-R, local_region_step):
-        # for x in range(0, width):
-        #     for y in range(0, height, local_region_step):
+        for x in range(0, width):
+            for y in range(0, height, local_region_step):
                 # Calculate the local binary pattern for this pixel
                 binary_pattern = ""
                 for move in neighbor_steps:
                     new_x = x + move[0]
                     new_y = y + move[1]
-                    # if not inside(new_x, new_y, width, height):
-                    #     continue
-                    
+                    if not inside(new_x, new_y, width, height):
+                        continue
+
                     binary_pattern += "1" if all_pixels[new_x,
                                                         new_y] >= all_pixels[x, y] else "0"
-
-                # num = cyclic_shift_to_smallest(binary_pattern)
-                num = int(binary_pattern, 2)
+                
+                if cyclic_shifting:
+                    num = cyclic_shift_to_smallest(binary_pattern)
+                else:
+                    num = int(binary_pattern, 2)
+                    
                 converted_pixels.append(num)
 
         if hist:
@@ -109,7 +113,8 @@ def compare_with_scikit(image_size, distance_metric, hist=True):
     for img in images:
         converted_image = local_binary_pattern(img, P, R, method="default")
         if hist:
-            img_hist = np.histogram(converted_image.flatten(), bins=range(256))[0]
+            img_hist = np.histogram(
+                converted_image.flatten(), bins=range(256))[0]
             vectors.append(img_hist)
         else:
             vectors.append(converted_image.flatten())
@@ -125,9 +130,15 @@ def compare_with_scikit(image_size, distance_metric, hist=True):
 
 
 image_size = (128, 128)
+R = 1
+P = 8 * R
+region_step = 2*R + 1
+hist_ind = False
+cyclic_shifting = False
 
 images, classes = read_dataset(image_size)
-vectors = lbp(images)
+vectors = lbp(images, R=R, pattern_length=P, local_region_step=region_step,
+              hist=hist_ind, cyclic_shifting=cyclic_shifting)
 print(calculate_rank1_accuracy(vectors, classes, "euclidean"))
 
 # compare_with_scikit("euclidean")
