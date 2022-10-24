@@ -48,10 +48,13 @@ def cyclic_shift_to_smallest(binary_string):
     return min(numbers)
 
 
-def generate_neighbor_indices(R):
+def generate_neighbor_steps(R):
     """ 
-    Generate the moves that are to be performed to locate neighbors 
-    of a pixel during LBP 
+    Generate the moves that need to be performed to locate 
+    all neighbors of a pixel during LBP.
+
+    Moves are created starting to the right of the center
+    in a counter-clockwise notion (like in the original paper).
     """
     neighbors = []
 
