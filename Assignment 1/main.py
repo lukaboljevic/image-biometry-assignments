@@ -1,8 +1,7 @@
 from scipy.spatial.distance import cdist
-from skimage.feature import local_binary_pattern
 import numpy as np
 from utils import generate_neighbor_steps, cyclic_shift_to_smallest, \
-    read_dataset, inside, count_transitions
+    inside, count_transitions
 from random import sample, seed
 
 
@@ -11,7 +10,7 @@ def pixels(images):
     return list(img.getdata() for img in images)
 
 
-def lbp(images, R=1, P=0, local_region_step=1,
+def lbp(images, R=1, P=8, local_region_step=1,
         use_histograms=False, cyclic_shifting=False, uniform=False):
     """
     Implementation of LBP (Local Binary Patterns).
@@ -23,10 +22,10 @@ def lbp(images, R=1, P=0, local_region_step=1,
     R: int (=1 by default)
         Radius i.e. how far away from the current observed pixel
         do we take neighbors
-    P: int (=0 by default)
+    P: int (=8 by default)
         The number of pixels we take around the center;
-        Default value 0, which translates to 8*R, otherwise it's
-        between 1 and 8*R
+        Default value 8, which translates to 8*R in the
+        default case, otherwise it's between 1 and 8*R
     local_region_step: int (=1 by default)
         Defines how many pixels to the right we move after
         processing a pixel; default value is 1, maximum value
@@ -45,18 +44,20 @@ def lbp(images, R=1, P=0, local_region_step=1,
     vectors = []
     neighbor_steps = generate_neighbor_steps(R)
     width, height = images[0].size
-    seed(0)  # for (potentially) sampling P
+    seed(0)  # for (potentially) sampling neighbors
 
     if P > 8*R:
         raise ValueError(
             "Binary pattern length too large - cannot be more than 8*R")
 
-    # If P = 0, then we take all 8*R pixels around the
-    # center i.e. P = 8*R and we do not touch the neighbor_indices list.
-    # Otherwise, if it's > 0, then it determines the length of the pattern
-    # (duh). If it's < 8*R, then it's basically the sample size for the
-    # neighborhood. We can of course sample between 1 and 8*R neighbors.
-    if P > 0:
+    # If P = 8*R, then we take all 8*R pixels around the center i.e.
+    # we do not touch the neighbor_indices list.
+    # Otherwise, if it's > 0 (and < 8*R), then it determines the length of 
+    # the pattern (duh). In this case, it's basically the sample size for the
+    # neighborhood.
+    if P == 8 * R:
+        pass
+    else:
         # I'm sampling indices, rather than actual elements, so the
         # operation of collecting neighbors i.e. building a binary number,
         # starting to the right of the center pixel, in a counter-clockwise
@@ -137,31 +138,3 @@ def calculate_rank1_accuracy(vectors, classes, distance_metric):
         correct += (classes[i] == classes[closest_index])
 
     return correct / total
-
-
-def compare_with_scikit(image_size, distance_metric, use_histograms=True):
-    """ Compare my implementation of LBP with Scikit's """
-    R = 1
-    P = 8 * R
-    images, classes = read_dataset(image_size)
-
-    # Scikit LBP
-    vectors = []
-
-    for img in images:
-        converted_image = local_binary_pattern(img, P, R, method="default")
-        if use_histograms:
-            img_hist = np.histogram(
-                converted_image.flatten(), bins=range(256))[0]
-            vectors.append(img_hist)
-        else:
-            vectors.append(converted_image.flatten())
-
-    scikit_rank1 = calculate_rank1_accuracy(vectors, classes, distance_metric)
-
-    # My implementation
-    vectors = lbp(images, use_histograms=use_histograms)
-    my_rank1 = calculate_rank1_accuracy(vectors, classes, distance_metric)
-
-    print("Scikit implementation: ", scikit_rank1)
-    print("My implementation: ", my_rank1)

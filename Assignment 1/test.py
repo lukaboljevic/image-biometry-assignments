@@ -1,10 +1,15 @@
 from utils import read_dataset
-from code import lbp, calculate_rank1_accuracy
+from main import lbp, calculate_rank1_accuracy, pixels
+from skimage.feature import local_binary_pattern
+import numpy as np
 
 
 image_size = (128, 128)
 images, classes = read_dataset(image_size)
 
+
+# Please ignore the stupidity of the below for loops,
+# I am fully aware how dumb it looks.
 
 #######################################
 # Non uniform LBP with various params #
@@ -14,30 +19,37 @@ def test_non_uniform():
     Rs = [1, 2, 3, 4]
     use_hists = [False, True]
     cyclic_shiftings = [False, True]
-    distance_metric = "cosine"
+    distance_metrics = ["euclidean", "cosine"]
+    region_step = 1
 
-    for R in Rs:
-        Ps = [4*R, 8*R]
-        region_step = 2*R + 1
+    for distance_metric in distance_metrics:
+        with open("128x128-defaultLBP.txt", "a") as f:
+            f.write("\n")
+            f.write("=======================================================\n")
+            f.write(f"region step size = 1 (minimum possible)\n")
+            f.write(f"{distance_metric} distance\n")
+            f.write("=======================================================\n")
+            f.write("\n")
 
-        for P in Ps:
-            for use_hist in use_hists:
-                for cyclic_shifting in cyclic_shiftings:
-                    vectors = lbp(images, R=R, P=P,
-                                  local_region_step=region_step,
-                                  use_histograms=use_hist,
-                                  cyclic_shifting=cyclic_shifting)
-                    print("LBP done")
-                    result = calculate_rank1_accuracy(
-                        vectors, classes, distance_metric)
-                    print("Rank-1 accuracy calculated\n")
+        for R in Rs:
+            Ps = [4*R, 8*R]
+            for P in Ps:
+                for use_hist in use_hists:
+                    for cyclic_shifting in cyclic_shiftings:
+                        vectors = lbp(images, R=R, P=P,
+                                    local_region_step=region_step,
+                                    use_histograms=use_hist,
+                                    cyclic_shifting=cyclic_shifting)
+                        print("LBP done")
+                        result = calculate_rank1_accuracy(
+                            vectors, classes, distance_metric)
+                        print("Rank-1 accuracy calculated\n")
 
-                    with open("128x128-defaultLBP.txt", "a") as f:
-                        f.write(f"R={R}, P={P}, step={region_step}, hist={use_hist},\n" +
-                                f"cyclic shifting={cyclic_shifting}, " +
-                                f"distance metric={distance_metric}")
-                        f.write(f"\n\t{result}\n")
-                        f.write("\n")
+                        with open("128x128-defaultLBP.txt", "a") as f:
+                            f.write(f"R={R}, P={P}, hist={use_hist}, " +
+                                    f"cyclic shifting={cyclic_shifting}\n")
+                            f.write(f"\t{result}\n")
+                            f.write("\n")
 
 
 ###################################
@@ -47,34 +59,41 @@ def test_non_uniform():
 def test_uniform():
     Rs = [1, 2, 3, 4]
     use_hists = [False, True]
-    distance_metric = "cosine"
+    distance_metrics = ["euclidean", "cosine"]
+    region_step = 1
 
-    for R in Rs:
-        Ps = [4*R, 8*R]
-        region_step = 2*R + 1
-        for P in Ps:
-            for use_hist in use_hists:
-                vectors = lbp(images, R=R, P=P,
-                              local_region_step=region_step,
-                              use_histograms=use_hist,
-                              uniform=True)
-                print("LBP done")
-                result = calculate_rank1_accuracy(
-                    vectors, classes, distance_metric)
-                print("Rank-1 accuracy calculated\n")
+    for distance_metric in distance_metrics:
+        with open("128x128-defaultLBP.txt", "a") as f:
+            f.write("\n")
+            f.write("=======================================================\n")
+            f.write(f"region step size = 1 (minimum possible)\n")
+            f.write(f"{distance_metric} distance\n")
+            f.write("=======================================================\n")
+            f.write("\n")
+        for R in Rs:
+            Ps = [4*R, 8*R]
+            for P in Ps:
+                for use_hist in use_hists:
+                    vectors = lbp(images, R=R, P=P,
+                                local_region_step=region_step,
+                                use_histograms=use_hist,
+                                uniform=True)
+                    print("LBP done")
+                    result = calculate_rank1_accuracy(
+                        vectors, classes, distance_metric)
+                    print("Rank-1 accuracy calculated\n")
 
-                with open("128x128-uniformLBP.txt", "a") as f:
-                    f.write(f"R={R}, P={P}, step={region_step}, hist={use_hist}, " +
-                            f"distance metric={distance_metric}")
-                    f.write(f"\n\t{result}\n")
-                    f.write("\n")
+                    with open("128x128-uniformLBP.txt", "a") as f:
+                        f.write(f"R={R}, P={P}, hist={use_hist}\n")
+                        f.write(f"\t{result}\n")
+                        f.write("\n")
 
 
 ####################################
 # Testing with "static" parameters #
 ####################################
 
-def basic_testing():
+def basic_LBP_testing():
     R = 1
     P = 8 * R
     region_step = 2*R + 1
@@ -93,4 +112,57 @@ def basic_testing():
     result = calculate_rank1_accuracy(vectors, classes, distance_metric)
     print(result)
 
-test_uniform()
+
+########################################
+# Testing the pixels feature extractor #
+########################################
+
+def test_pixels():
+    distance_metrics = ["euclidean", "cosine", "cityblock", "hamming"]
+    vectors = pixels(images)
+
+    for distance_metric in distance_metrics:
+        result = calculate_rank1_accuracy(vectors, classes, distance_metric)
+        with open("128x128-pixels.txt", "a") as f:
+            f.write(f"distance metric={distance_metric}: {result}\n")
+            f.write("\n")
+        print(f"{distance_metric} done")
+
+
+###############################################
+# Comparing my LBP implementation with Scikit #
+###############################################
+
+def compare_with_scikit(image_size, distance_metric, R=1, P=8,
+                        use_histograms=True, uniform=False,
+                        cyclic_shifting=False):
+    """ Compare my implementation of LBP with Scikit's """
+
+    images, classes = read_dataset(image_size)
+    method = "uniform" if uniform else "default"
+
+    # Scikit LBP
+    vectors = []
+
+    for img in images:
+        converted_image = local_binary_pattern(img, P, R, method=method)
+        if use_histograms:
+            img_hist = np.histogram(
+                converted_image.flatten(), bins=range(256))[0]
+            vectors.append(img_hist)
+        else:
+            vectors.append(converted_image.flatten())
+
+    scikit_rank1 = calculate_rank1_accuracy(vectors, classes, distance_metric)
+
+    # My implementation
+    vectors = lbp(images, R=R, P=P, use_histograms=use_histograms,
+                  uniform=uniform, cyclic_shifting=cyclic_shifting)
+    my_rank1 = calculate_rank1_accuracy(vectors, classes, distance_metric)
+
+    print("Scikit implementation: ", scikit_rank1)
+    print("My implementation: ", my_rank1)
+
+
+# test_non_uniform()
+# test_uniform()
