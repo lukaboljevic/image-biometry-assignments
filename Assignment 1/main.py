@@ -1,7 +1,7 @@
 from scipy.spatial.distance import cdist
 import numpy as np
 from utils import generate_neighbor_steps, cyclic_shift_to_smallest, \
-    inside, count_transitions
+    inside, count_transitions, apply_histogram
 from random import sample, seed
 
 
@@ -44,11 +44,11 @@ def lbp(images, R=1, P=8, local_region_step=1,
     vectors = []
     neighbor_steps = generate_neighbor_steps(R)
     width, height = images[0].size
+    bins_size = (P + 1) if uniform else 2 ** P
     seed(0)  # for (potentially) sampling neighbors
 
-    if P > 8*R:
-        raise ValueError(
-            "Binary pattern length too large - cannot be more than 8*R")
+    # I will assume parameters are passed within their correct intervals,
+    # to not complicate unnecessarily.
 
     # If P = 8*R, then we take all 8*R pixels around the center i.e.
     # we do not touch the neighbor_indices list.
@@ -63,22 +63,17 @@ def lbp(images, R=1, P=8, local_region_step=1,
         # starting to the right of the center pixel, in a counter-clockwise
         # notion, is preserved
 
-        # I'm sampling random neighbors not to complicate
+        # I'm sampling randomly for simplicity
         length = len(neighbor_steps)
         indices = sorted(sample(range(length), P))
         neighbor_steps = [neighbor_steps[index] for index in indices]
 
-    # Validate the value for the step size
-    if local_region_step < 1 or local_region_step > 2*R + 1:
-        raise ValueError(
-            "Step size for local regions invalid - must be between 1 and 2*R + 1.")
-
     for img in images:
         all_pixels = img.load()
-        converted_pixels = []
+        converted_image = np.zeros((height, width), dtype=np.int16)
 
-        for x in range(0, width):
-            for y in range(0, height, local_region_step):
+        for x in range(0, height):
+            for y in range(0, width, local_region_step):
                 # Calculate the local binary pattern for this pixel
                 binary_pattern = ""
                 for move in neighbor_steps:
@@ -103,14 +98,13 @@ def lbp(images, R=1, P=8, local_region_step=1,
                     else:
                         num = int(binary_pattern, 2)
 
-                converted_pixels.append(num)
+                converted_image[x][y] = num
 
         if use_histograms:
             # bins have to be explicitly stated, otherwise doesn't make sense
-            # np.histogram(...)[0] is the actual histogram, [1] are bins
-            vectors.append(np.histogram(converted_pixels, bins=range(256))[0])
+            vectors.append(apply_histogram(converted_image, (16, 16), bins_size))
         else:
-            vectors.append(converted_pixels)
+            vectors.append(converted_image.flatten())
 
     return vectors
 

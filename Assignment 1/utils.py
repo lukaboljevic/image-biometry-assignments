@@ -1,5 +1,6 @@
 import os
 from PIL import Image
+import numpy as np
 
 
 def read_dataset(image_size):
@@ -25,6 +26,33 @@ def read_dataset(image_size):
         break
 
     return images, classes
+
+
+def apply_histogram(lbp_image, block_size, bins_size):
+    """
+    A function that splits up the LBP image into blocks of fixed
+    size, calculates the histogram for each block, and then
+    concatenates all of them to obtain the final feature vector
+    for the original image.
+    """
+    # I won't complicate now, with checking if these values are
+    # okay; I will assume the appropriate block size is passed
+    block_width, block_height = block_size
+    height, width = lbp_image.shape
+
+    vector = np.array([])
+
+    for x in range(0, height, block_height):
+        for y in range(0, width, block_width):
+            values = []
+            for i in range(block_height):
+                for j in range(block_width):
+                    values.append(lbp_image[x + i][y + j])
+            
+            h = np.histogram(values, bins=range(bins_size))[0]
+            vector = np.append(vector, h)
+    
+    return vector
 
 
 def cyclic_shift_to_smallest(binary_string):
