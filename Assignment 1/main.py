@@ -44,7 +44,7 @@ def lbp(images, R=1, P=8, local_region_step=1,
     vectors = []
     neighbor_steps = generate_neighbor_steps(R)
     width, height = images[0].size
-    bins_size = (P + 1) if uniform else 2 ** P
+    bins_size = (P + 2) if uniform else 2 ** P
     seed(0)  # for (potentially) sampling neighbors
 
     # I will assume parameters are passed within their correct intervals,

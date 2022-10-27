@@ -1,0 +1,159 @@
+
+================================
+euclidean distance
+================================
+
+R=1, P=4, hist=False
+	0.063
+
+R=1, P=4, hist=True
+	0.194
+
+R=1, P=8, hist=False
+	0.015
+
+R=1, P=8, hist=True
+	0.11
+
+R=2, P=8, hist=False
+	0.011
+
+R=2, P=8, hist=True
+	0.154
+
+R=2, P=16, hist=False
+	0.014
+
+R=2, P=16, hist=True
+	0.122
+
+R=3, P=12, hist=False
+	0.026
+
+R=3, P=12, hist=True
+	0.17
+
+R=3, P=24, hist=False
+	0.027
+
+R=3, P=24, hist=True
+	0.131
+
+R=4, P=16, hist=False
+	0.041
+
+R=4, P=16, hist=True
+	0.191
+
+R=4, P=32, hist=False
+	0.071
+
+R=4, P=32, hist=True
+	0.151
+
+
+================================
+cosine distance
+================================
+
+R=1, P=4, hist=False
+	0.071
+
+R=1, P=4, hist=True
+	0.21
+
+R=1, P=8, hist=False
+	0.012
+
+R=1, P=8, hist=True
+	0.124
+
+R=2, P=8, hist=False
+	0.011
+
+R=2, P=8, hist=True
+	0.163
+
+R=2, P=16, hist=False
+	0.014
+
+R=2, P=16, hist=True
+	0.137
+
+R=3, P=12, hist=False
+	0.038
+
+R=3, P=12, hist=True
+	0.182
+
+R=3, P=24, hist=False
+	0.015
+
+R=3, P=24, hist=True
+	0.145
+
+R=4, P=16, hist=False
+	0.038
+
+R=4, P=16, hist=True
+	0.199
+
+R=4, P=32, hist=False
+	0.017
+
+R=4, P=32, hist=True
+	0.143
+
+
+================================
+cityblock distance
+================================
+
+R=1, P=4, hist=False
+	0.121
+
+R=1, P=4, hist=True
+	0.233
+
+R=1, P=8, hist=False
+	0.019
+
+R=1, P=8, hist=True
+	0.134
+
+R=2, P=8, hist=False
+	0.021
+
+R=2, P=8, hist=True
+	0.183
+
+R=2, P=16, hist=False
+	0.039
+
+R=2, P=16, hist=True
+	0.161
+
+R=3, P=12, hist=False
+	0.081
+
+R=3, P=12, hist=True
+	0.223
+
+R=3, P=24, hist=False
+	0.109
+
+R=3, P=24, hist=True
+	0.19
+
+R=4, P=16, hist=False
+	0.174
+
+R=4, P=16, hist=True
+	0.264
+
+R=4, P=32, hist=False
+	0.153
+
+R=4, P=32, hist=True
+	0.205
+

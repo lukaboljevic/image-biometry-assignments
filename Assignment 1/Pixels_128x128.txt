@@ -1,0 +1,8 @@
+distance metric=euclidean: 0.132
+
+distance metric=cosine: 0.167
+
+distance metric=cityblock: 0.132
+
+distance metric=hamming: 0.062
+

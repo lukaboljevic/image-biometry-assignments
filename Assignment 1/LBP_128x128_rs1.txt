@@ -1,0 +1,195 @@
+
+================================
+euclidean distance
+================================
+
+R=1, P=4, hist=False, cyclic=False
+	0.107
+
+R=1, P=4, hist=False, cyclic=True
+	0.052
+
+R=1, P=4, hist=True, cyclic=False
+	0.247
+
+R=1, P=4, hist=True, cyclic=True
+	0.197
+
+R=1, P=8, hist=False, cyclic=False
+	0.189
+
+R=1, P=8, hist=False, cyclic=True
+	0.018
+
+R=1, P=8, hist=True, cyclic=False
+	0.246
+
+R=1, P=8, hist=True, cyclic=True
+	0.118
+
+R=2, P=4, hist=False, cyclic=False
+	0.102
+
+R=2, P=4, hist=False, cyclic=True
+	0.045
+
+R=2, P=4, hist=True, cyclic=False
+	0.261
+
+R=2, P=4, hist=True, cyclic=True
+	0.198
+
+R=2, P=8, hist=False, cyclic=False
+	0.118
+
+R=2, P=8, hist=False, cyclic=True
+	0.013
+
+R=2, P=8, hist=True, cyclic=False
+	0.262
+
+R=2, P=8, hist=True, cyclic=True
+	0.166
+
+R=2, P=12, hist=False, cyclic=False
+	0.225
+
+R=2, P=12, hist=False, cyclic=True
+	0.012
+
+R=2, P=12, hist=True, cyclic=False
+	0.251
+
+R=2, P=12, hist=True, cyclic=True
+	0.156
+
+
+================================
+cosine distance
+================================
+
+R=1, P=4, hist=False, cyclic=False
+	0.047
+
+R=1, P=4, hist=False, cyclic=True
+	0.072
+
+R=1, P=4, hist=True, cyclic=False
+	0.284
+
+R=1, P=4, hist=True, cyclic=True
+	0.212
+
+R=1, P=8, hist=False, cyclic=False
+	0.073
+
+R=1, P=8, hist=False, cyclic=True
+	0.012
+
+R=1, P=8, hist=True, cyclic=False
+	0.328
+
+R=1, P=8, hist=True, cyclic=True
+	0.124
+
+R=2, P=4, hist=False, cyclic=False
+	0.054
+
+R=2, P=4, hist=False, cyclic=True
+	0.078
+
+R=2, P=4, hist=True, cyclic=False
+	0.292
+
+R=2, P=4, hist=True, cyclic=True
+	0.223
+
+R=2, P=8, hist=False, cyclic=False
+	0.09
+
+R=2, P=8, hist=False, cyclic=True
+	0.02
+
+R=2, P=8, hist=True, cyclic=False
+	0.301
+
+R=2, P=8, hist=True, cyclic=True
+	0.182
+
+R=2, P=12, hist=False, cyclic=False
+	0.107
+
+R=2, P=12, hist=False, cyclic=True
+	0.021
+
+R=2, P=12, hist=True, cyclic=False
+	0.347
+
+R=2, P=12, hist=True, cyclic=True
+	0.176
+
+
+================================
+cityblock distance
+================================
+
+R=1, P=4, hist=False, cyclic=False
+	0.162
+
+R=1, P=4, hist=False, cyclic=True
+	0.105
+
+R=1, P=4, hist=True, cyclic=False
+	0.313
+
+R=1, P=4, hist=True, cyclic=True
+	0.237
+
+R=1, P=8, hist=False, cyclic=False
+	0.232
+
+R=1, P=8, hist=False, cyclic=True
+	0.018
+
+R=1, P=8, hist=True, cyclic=False
+	0.355
+
+R=1, P=8, hist=True, cyclic=True
+	0.142
+
+R=2, P=4, hist=False, cyclic=False
+	0.163
+
+R=2, P=4, hist=False, cyclic=True
+	0.101
+
+R=2, P=4, hist=True, cyclic=False
+	0.329
+
+R=2, P=4, hist=True, cyclic=True
+	0.239
+
+R=2, P=8, hist=False, cyclic=False
+	0.186
+
+R=2, P=8, hist=False, cyclic=True
+	0.015
+
+R=2, P=8, hist=True, cyclic=False
+	0.392
+
+R=2, P=8, hist=True, cyclic=True
+	0.196
+
+R=2, P=12, hist=False, cyclic=False
+	0.01
+
+R=2, P=12, hist=False, cyclic=True
+	0.01
+
+R=2, P=12, hist=True, cyclic=False
+	0.426
+
+R=2, P=12, hist=True, cyclic=True
+	0.173
+

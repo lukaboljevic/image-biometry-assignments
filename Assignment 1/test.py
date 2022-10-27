@@ -31,7 +31,10 @@ def test_non_uniform():
             f.write("\n")
 
         for R in Rs:
-            Ps = [4*R, 8*R]
+            if R == 1:
+                Ps = [4, 8]
+            else:
+                Ps = [4, 8, 12]
             for P in Ps:
                 for use_hist in use_hists:
                     for cyclic_shifting in cyclic_shiftings:
@@ -57,10 +60,10 @@ def test_non_uniform():
 
 def test_uniform():
     region_step = 1
-    Rs = [1, 2]
+    Rs = [1, 2, 3, 4]
     use_hists = [False, True]
     distance_metrics = ["euclidean", "cosine", "cityblock"]
-    file_name = "LBP_128x128_rs1.txt"
+    file_name = "uLBP_128x128_rs1.txt"
 
     for distance_metric in distance_metrics:
         with open(file_name, "a") as f:
@@ -122,7 +125,7 @@ def test_pixels():
 
     for distance_metric in distance_metrics:
         result = calculate_rank1_accuracy(vectors, classes, distance_metric)
-        with open("Pixels-128x128.txt", "a") as f:
+        with open("Pixels_128x128.txt", "a") as f:
             f.write(f"distance metric={distance_metric}: {result}\n")
             f.write("\n")
         print(f"{distance_metric} done")
@@ -137,7 +140,7 @@ def compare_with_scikit(distance_metric, R=1, P=8, use_histograms=True,
     """ Compare my implementation of LBP with Scikit's """
 
     method = "uniform" if uniform else "default"
-    bins_size = (P + 1) if uniform else 2 ** P
+    bins_size = (P + 2) if uniform else 2 ** P
 
     # Scikit LBP
     vectors = []
@@ -160,7 +163,6 @@ def compare_with_scikit(distance_metric, R=1, P=8, use_histograms=True,
     print("My implementation: ", my_rank1)
 
 
-test_pixels()
 test_non_uniform()
 test_uniform()
 # basic_LBP_testing()
