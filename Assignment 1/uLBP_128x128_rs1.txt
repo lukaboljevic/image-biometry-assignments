@@ -121,11 +121,23 @@ R=1, P=8, hist=False
 R=1, P=8, hist=True
 	0.134
 
+R=2, P=4, hist=False
+	0.101
+
+R=2, P=4, hist=True
+	0.238
+
 R=2, P=8, hist=False
 	0.021
 
 R=2, P=8, hist=True
 	0.183
+
+R=2, P=12, hist=False
+	0.031
+
+R=2, P=12, hist=True
+	0.177
 
 R=2, P=16, hist=False
 	0.039
@@ -156,4 +168,10 @@ R=4, P=32, hist=False
 
 R=4, P=32, hist=True
 	0.205
+
+R=3, P=4, hist=True
+	0.268
+
+R=3, P=8, hist=True
+	0.267
 

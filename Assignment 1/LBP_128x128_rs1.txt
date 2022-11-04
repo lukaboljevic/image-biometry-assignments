@@ -193,3 +193,12 @@ R=2, P=12, hist=True, cyclic=False
 R=2, P=12, hist=True, cyclic=True
 	0.173
 
+R=3, P=4, hist=True, cyclic=False
+	0.356
+
+R=3, P=8, hist=True, cyclic=False
+	0.427
+
+R=3, P=12, hist=True, cyclic=False
+	0.465
+
