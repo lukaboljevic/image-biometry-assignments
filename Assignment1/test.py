@@ -16,10 +16,10 @@ images, classes = read_dataset(image_size)
 
 def test_non_uniform():
     region_step = 1
-    Rs = [1, 2]
+    Rs = [2, 3]
     use_hists = [False, True]
     cyclic_shiftings = [False, True]
-    distance_metrics = ["euclidean", "cosine", "cityblock"]
+    distance_metrics = ["cityblock"]
     file_name = "LBP_128x128_rs1.txt"
 
     for distance_metric in distance_metrics:
@@ -31,10 +31,7 @@ def test_non_uniform():
             f.write("\n")
 
         for R in Rs:
-            if R == 1:
-                Ps = [4, 8]
-            else:
-                Ps = [4, 8, 12]
+            Ps = [4, 8, 12]
             for P in Ps:
                 for use_hist in use_hists:
                     for cyclic_shifting in cyclic_shiftings:
@@ -60,9 +57,9 @@ def test_non_uniform():
 
 def test_uniform():
     region_step = 1
-    Rs = [1, 2, 3, 4]
+    Rs = [2, 3]
     use_hists = [False, True]
-    distance_metrics = ["euclidean", "cosine", "cityblock"]
+    distance_metrics = ["cityblock"]
     file_name = "uLBP_128x128_rs1.txt"
 
     for distance_metric in distance_metrics:
@@ -73,7 +70,7 @@ def test_uniform():
             f.write("================================\n")
             f.write("\n")
         for R in Rs:
-            Ps = [4*R, 8*R]
+            Ps = [4, 8, 12]
             for P in Ps:
                 for use_hist in use_hists:
                     vectors = lbp(images, R=R, P=P,
@@ -120,7 +117,7 @@ def basic_LBP_testing():
 ########################################
 
 def test_pixels():
-    distance_metrics = ["euclidean", "cosine", "cityblock", "hamming"]
+    distance_metrics = ["euclidean", "cosine", "cityblock"]
     vectors = pixels(images)
 
     for distance_metric in distance_metrics:
@@ -163,7 +160,7 @@ def compare_with_scikit(distance_metric, R=1, P=8, use_histograms=True,
     print("My implementation: ", my_rank1)
 
 
-test_non_uniform()
-test_uniform()
+# test_non_uniform()
+# test_uniform()
 # basic_LBP_testing()
-# compare_with_scikit("cosine", use_histograms=True)
+# compare_with_scikit("cityblock", cyclic_shifting=False, uniform=True)
