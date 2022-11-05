@@ -1,0 +1,41 @@
+#################
+# Haar-cascades #
+#################
+
+I just read about the approach here:
+https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html (has python implementation)
+or 
+https://docs.opencv.org/3.4/d2/d99/tutorial_js_face_detection.html
+
+and
+https://pyimagesearch.com/2021/04/12/opencv-haar-cascades/
+
+and the slides (CTRL+F for "Viola-Jones Face Detector")
+
+Reading an image and basic operations; used because opencv reads an 
+image as a numpy array, which is the required type for the 
+CascadeClassifier().detectMultiScale() function:
+    https://opencv-tutorial.readthedocs.io/en/latest/intro/intro.html
+
+Calculating IoU:
+    First look at: https://pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/
+    ^^ this provides a correct implementation of IoU
+    Then look at: https://stackoverflow.com/questions/25349178/calculating-percentage-of-bounding-box-overlap-for-image-detector-evaluation
+    ^^ to see why we need to add +1 when we're calculating areas
+
+###########
+# YOLO v4 #
+###########
+
+YOLO is good cause it's faster than other neural network approaches.
+Ultimately, we aim to predict a class of an object and the bounding box specifying object location.
+
+What is YOLO to begin with ?
+    https://medium.com/analytics-vidhya/yolo-explained-5b6f4564f31
+    https://www.baeldung.com/cs/yolo-algorithm
+    https://www.v7labs.com/blog/yolo-object-detection
+
+YOLO v4
+    https://medium.com/aiguys/yolo-v4-explained-in-full-detail-5200b77aa825
+    https://blog.roboflow.com/a-thorough-breakdown-of-yolov4/
+
