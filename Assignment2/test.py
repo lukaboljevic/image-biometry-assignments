@@ -6,8 +6,15 @@ file_names = list(dict.fromkeys(file_names))  # remove duplicates
 
 
 def evaluate_haar():
-    left_miou, right_miou = haar_cascades(file_names)
-    print(left_miou, right_miou)
+    scale_factor = 1.15
+    min_neighbors = 3
+    min_size = (0, 0)
+
+    miou = haar_cascades(file_names, 
+                         scale_factor=scale_factor,
+                         min_neighbors=min_neighbors,
+                         min_size=min_size)
+    print(f"{scale_factor}, {min_neighbors}, {min_size} -> {miou}")
 
 
 def evaluate_yolov5():
@@ -15,4 +22,4 @@ def evaluate_yolov5():
     print(miou)
 
 
-evaluate_yolov5()
+evaluate_haar()
