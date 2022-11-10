@@ -39,3 +39,12 @@ YOLO v4
     https://medium.com/aiguys/yolo-v4-explained-in-full-detail-5200b77aa825
     https://blog.roboflow.com/a-thorough-breakdown-of-yolov4/
 
+
+###################
+# Calculating mAP #
+###################
+
+https://www.youtube.com/watch?v=TB-fdISzpHQ&t=2227s
+
+Unfortunately we can't calculate mAP for the Haar cascades model, as it 
+does not return any confidence scores. We can only calculate it for YOLO.

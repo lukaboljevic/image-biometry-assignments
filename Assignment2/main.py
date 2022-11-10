@@ -1,9 +1,10 @@
 import cv2 as cv
 from my_utils import IoU
 import torch
+import json
 
 
-def haar_cascades(file_names, scale_factor=1.05, min_neighbors=0, min_size=(30, 30)):
+def haar_cascades(file_names, scale_factor=1.05, min_neighbors=5, min_size=(30, 30)):
     """
     Detect ears on images using pre-trained Haar-cascade classifiers. 
     Calculate the mean Intersection over Union, using the supplied 
@@ -13,8 +14,7 @@ def haar_cascades(file_names, scale_factor=1.05, min_neighbors=0, min_size=(30, 
     left_ear_detector = cv.CascadeClassifier("./data/haarcascade_mcs_leftear.xml")
     right_ear_detector = cv.CascadeClassifier("./data/haarcascade_mcs_rightear.xml")
 
-    total_iou = 0
-    num_dets = 0  # we will calculate mean IoU over all detected boxes
+    ious = []  # here we will store all calculated IoUs
     remaining = len(file_names)
     for file_name in file_names:
         img = cv.imread(f"./data/ear_data/test/{file_name}.png") # numpy.ndarray
@@ -36,7 +36,7 @@ def haar_cascades(file_names, scale_factor=1.05, min_neighbors=0, min_size=(30, 
 
         # Detectors return an array of arrays, namely 
         # [[topleft_x, topleft_y, width, height]]
-        left_box = left_ear_detector.detectMultiScale(img, 
+        left_box = left_ear_detector.detectMultiScale(img,
                                                       scaleFactor=scale_factor,
                                                       minNeighbors=min_neighbors,
                                                       minSize=min_size)
@@ -51,33 +51,26 @@ def haar_cascades(file_names, scale_factor=1.05, min_neighbors=0, min_size=(30, 
             ear_boxes.append(e)
 
         # Calculate IoU for all detected boxes
-        ious = []
-        if len(ear_boxes) >= 1:
-            for i in range(len(ear_boxes)):
-                res = IoU([
-                    ear_boxes[i][0], ear_boxes[i][1],  # x, y of top left corner
-                    ear_boxes[i][0] + ear_boxes[i][2],  # x + width i.e. x of bottom right
-                    ear_boxes[i][1] + ear_boxes[i][3]  # y + height i.e. y of bottom right
-                ], gt_box)
-                ious.append(res)
-            increment = len(ious)
-        else:
-            # There was no ears detected, but still account for this
-            increment = 1
-
-        total_iou += sum(ious)
-        num_dets += increment
+        for i in range(len(ear_boxes)):
+            res = IoU([
+                ear_boxes[i][0], ear_boxes[i][1],  # x, y of top left corner
+                ear_boxes[i][0] + ear_boxes[i][2],  # x + width i.e. x of bottom right
+                ear_boxes[i][1] + ear_boxes[i][3]  # y + height i.e. y of bottom right
+            ], gt_box)
+            ious.append(res)
 
         remaining -= 1
         print(f"Haar-cascades - remaining {remaining} / {len(file_names)}")
 
+    # Average IoU over all detected boxes
+    final_result = sum(ious) / len(ious)
+
     # Save results to a file
     temp = ",".join(str(x) for x in min_size)
     with open(f"./results/haar-{str(scale_factor)}-{str(min_neighbors)}-{temp}.txt", "w") as f:
-        f.write(f"{total_iou / num_dets}\n")
+        f.write(f"{final_result}\n")
 
-    # Average IoU over all detected boxes
-    return total_iou / num_dets
+    return final_result
 
 
 def yolov5(file_names):
@@ -90,8 +83,7 @@ def yolov5(file_names):
     model = torch.hub.load("ultralytics/yolov5", "custom", path="./data/yolo5s.pt")
     print()
 
-    total_iou = 0
-    num_dets = 0  # we will calculate mean IoU over all detected boxes 
+    ious = []  # here we will store all calculated IoUs
     remaining = len(file_names)
     for file_name in file_names:
         # Read image
@@ -121,30 +113,37 @@ def yolov5(file_names):
         results = model(img)  
 
         # Get a pandas DF with information on the detected bounding 
-        # boxes, confidence, and class. We only need the coordinates
-        # of the bounding boxes.
+        # boxes, confidence, and class.
         df = results.pandas().xyxy[0]
         
-        # Calculate IoU for all detected boxes
-        ious = []
-        if len(df) >= 1:
-            for i in range(len(df)):
-                xmin = int(df.at[i, "xmin"])  # x of top left corner
-                ymin = int(df.at[i, "ymin"])  # y of top left corner
-                xmax = int(df.at[i, "xmax"])  # x of bottom right corner
-                ymax = int(df.at[i, "ymax"])  # y of bottom right corner
-                res = IoU([xmin, ymin, xmax, ymax], gt_box)
-                ious.append(res)
-            increment = len(ious)
-        else:
-            # There was no ears detected, but still account for this
-            increment = 1
-        
-        total_iou += sum(ious)
-        num_dets += increment
+        # Calculate IoU for all detected boxes. Store IoU and corresponding 
+        # confidence value for each detected bounding box in a JSON file,
+        # so we can calculate precision, recall, (mAP) ... later.
+        img_ious = []
+        confidences = []
+        for i in range(len(df)):
+            xmin = int(df.at[i, "xmin"])  # x of top left corner
+            ymin = int(df.at[i, "ymin"])  # y of top left corner
+            xmax = int(df.at[i, "xmax"])  # x of bottom right corner
+            ymax = int(df.at[i, "ymax"])  # y of bottom right corner
+
+            res = IoU([xmin, ymin, xmax, ymax], gt_box)
+            img_ious.append(res)
+            ious.append(res)
+
+            confidence = df.at[i, "confidence"]
+            confidences.append(confidence)
+            
+        # Save the info to a JSON file.
+        info = {
+            "ious": img_ious,
+            "confidences": confidences
+        }
+        with open(f"yolo_detections/{file_name}.json", "w") as f:
+            json.dump(info, f)
 
         remaining -= 1
         print(f"YOLOv5 - remaining {remaining} / {len(file_names)}")
     
     # Average IoU over all detected boxes
-    return total_iou / num_dets
+    return sum(ious) / len(ious)
