@@ -1,0 +1,1 @@
+Thresholds: 0:0.01:1, avg precision: 0.716, avg recall: 0.047

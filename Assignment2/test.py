@@ -1,10 +1,18 @@
 from main import haar_cascades, yolov5, yolo_pr
 import os
 import json
+import numpy as np
 
+
+# Get which file names are in our dataset
 file_names = map(lambda x: x[:-4], os.listdir("./data/ear_data/test/"))
-file_names = list(dict.fromkeys(file_names))  # remove duplicates
+
+# Remove duplicates
+file_names = list(dict.fromkeys(file_names))
+
+# Two IoU thresholds lists
 iou_thresholds = [0.2, 0.5, 0.7, 0.8, 0.9]
+iou_thresholds_all = np.arange(0, 1, 0.01)
 
 
 def evaluate_haar():
@@ -32,22 +40,26 @@ def evaluate_haar():
 
 
 def calculate_haar_pr():
-    scale_factor = 1.1
-    min_neighbors = 3
-    min_size = (5, 5)
+    scale_factor  = [1.05,     1.1,    1.1,      1.2       ]
+    min_neighbors = [1,        3,      6,        3         ]
+    min_size      = [(30, 30), (5, 5), (30, 30), (100, 100)]
 
-    precisions, recalls, miou = haar_cascades(file_names, 
-                                              iou_thresholds,
-                                              scale_factor=scale_factor,
-                                              min_neighbors=min_neighbors,
-                                              min_size=min_size,
-                                              save=True)
+    for i in range(len(min_size)):
+        precisions, recalls, miou = haar_cascades(file_names, 
+                                                  iou_thresholds_all,
+                                                  scale_factor=scale_factor[i],
+                                                  min_neighbors=min_neighbors[i],
+                                                  min_size=min_size[i])
 
-    print(scale_factor, min_neighbors, min_size)
-    print(iou_thresholds)
-    print(precisions)
-    print(recalls)
-    print(miou)
+        avg_p = round(sum(precisions) / len(precisions), 3)
+        avg_r = round(sum(recalls) / len(recalls), 3)
+
+        f = f"{scale_factor[i]:.2f}"
+        n = f"{min_neighbors[i]:02}"
+        s = "x".join(str(x) for x in min_size[i])
+        name = f"./results/APR-haar-{f}-{n}-{s}.txt"
+        with open(name, "w") as f:
+            f.write(f"Thresholds: 0:0.01:1, avg precision: {avg_p}, avg recall: {avg_r}\n")
 
 
 def evaluate_yolov5():
@@ -66,12 +78,12 @@ def calculate_yolo_pr():
     precisions, recalls = [], []
     for t in iou_thresholds:
         pr, rec = yolo_pr(yolo_json, t)
-        precisions.append(round(pr, 2))
-        recalls.append(round(rec, 2))
+        precisions.append(round(pr, 3))
+        recalls.append(round(rec, 3))
 
-    print(iou_thresholds)
-    print(precisions)
-    print(recalls)
+    print(list(zip(iou_thresholds, precisions, recalls)))
 
 
 calculate_haar_pr()
+# evaluate_yolov5()
+# calculate_yolo_pr()
