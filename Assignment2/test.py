@@ -68,6 +68,7 @@ def evaluate_yolov5():
 
 
 def calculate_yolo_pr():
+    # Read IoU and confidence for each detected box, detected by YOLOv5
     folder = "./yolo_detections"
     file_names = os.listdir(folder)
     yolo_json = []
@@ -75,15 +76,34 @@ def calculate_yolo_pr():
         with open(f"{folder}/{file_name}") as f:
             yolo_json.append(json.load(f))
 
+    # Calculate precision and recall values for some IoU thresholds
+    name = "PR-yolo-default.txt"
     precisions, recalls = [], []
     for t in iou_thresholds:
-        pr, rec = yolo_pr(yolo_json, t)
-        precisions.append(round(pr, 3))
-        recalls.append(round(rec, 3))
+        prec, rec = yolo_pr(yolo_json, t)
+        prec = round(prec, 3)
+        rec = round(rec, 3)
+        precisions.append(prec)
+        recalls.append(prec)
 
-    print(list(zip(iou_thresholds, precisions, recalls)))
+    with open(f"./results/{name}", "w") as f:
+        for i, t in enumerate(iou_thresholds):
+            f.write(f"Threshold: {t:.2f}, precision: {precisions[i]}, recall: {recalls[i]}\n")
+
+    # Calculate "average precision" and "average recall" for all IoU thresholds
+    name = "A" + name
+    precisions, recalls = [], []
+    for t in iou_thresholds_all:
+        prec, rec = yolo_pr(yolo_json, t)
+        precisions.append(prec)
+        recalls.append(rec)
+
+    avg_p = round(sum(precisions) / len(precisions), 3)
+    avg_r = round(sum(recalls) / len(recalls), 3)
+    with open(f"./results/{name}", "w") as f:
+        f.write(f"Thresholds: 0:0.01:1, avg precision: {avg_p}, avg recall: {avg_r}\n")
 
 
-calculate_haar_pr()
+# calculate_haar_pr()
 # evaluate_yolov5()
-# calculate_yolo_pr()
+calculate_yolo_pr()

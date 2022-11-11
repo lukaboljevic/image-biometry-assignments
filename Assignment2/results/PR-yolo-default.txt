@@ -1,0 +1,5 @@
+Threshold: 0.20, precision: 0.984, recall: 0.984
+Threshold: 0.50, precision: 0.984, recall: 0.984
+Threshold: 0.70, precision: 0.92, recall: 0.92
+Threshold: 0.80, precision: 0.719, recall: 0.719
+Threshold: 0.90, precision: 0.194, recall: 0.194
