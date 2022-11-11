@@ -51,6 +51,9 @@ def calculate_haar_pr():
                                                   min_neighbors=min_neighbors[i],
                                                   min_size=min_size[i])
 
+        # Only run the bottom code if average precision and recall need
+        # to be calculated, i.e. if haar_cascades was called with the
+        # iou_thresholds_all list
         avg_p = round(sum(precisions) / len(precisions), 3)
         avg_r = round(sum(recalls) / len(recalls), 3)
 
@@ -64,7 +67,9 @@ def calculate_haar_pr():
 
 def evaluate_yolov5():
     miou = yolov5(file_names)
-    print(miou)
+    name = "./results/mIoU-yolo-default.txt"
+    with open(name, "w") as f:
+        f.write(f"{miou}\n")
 
 
 def calculate_yolo_pr():

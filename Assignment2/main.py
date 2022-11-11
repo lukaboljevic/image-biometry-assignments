@@ -95,12 +95,12 @@ def haar_cascades(file_names, thresholds, scale_factor=1.05,
         f = f"{scale_factor:.2f}"
         n = f"{min_neighbors:02}"
         s = "x".join(str(x) for x in min_size)
-        name = f"haar-{f}-{n}-{s}.txt"
+        name = f"mIoU-haar-{f}-{n}-{s}.txt"
 
         with open(f"./results/{name}", "w") as f:
             f.write(f"{miou}\n")
 
-        name = "PR-" + name 
+        name = "PR-" + name[5:]
         with open(f"./results/{name}", "w") as f:
             for i in range(len(thresholds)):
                 f.write(f"Threshold: {thresholds[i]:.2f}, precision: {precisions[i]}, " + 
