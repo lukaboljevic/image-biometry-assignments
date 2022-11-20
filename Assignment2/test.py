@@ -21,8 +21,8 @@ def evaluate_haar():
     to establish if there was any sort of connection between the resulting
     values of mIoU, precision, and recall
     """
-    scale_factors = [1.05, 1.10, 1.15, 1.20]
-    min_neighbors = [1, 3, 5, 6, 10]
+    scale_factors = [1.05, 1.10]
+    min_neighbors = [3, 6]
     min_sizes = [(30, 30), (70, 70), (100, 100)]
 
     remaining = total = len(scale_factors) * len(min_neighbors) * len(min_sizes)
@@ -40,8 +40,12 @@ def evaluate_haar():
 
 
 def calculate_haar_pr():
+    """
+    Calculate precision and recall values for some VJ models.
+    """
+    # 1.10-3-5x5 is the default VJ model
     scale_factor  = [1.05,     1.1,    1.1,      1.2       ]
-    min_neighbors = [1,        3,      6,        3         ]
+    min_neighbors = [3,        3,      6,        3         ]
     min_size      = [(30, 30), (5, 5), (30, 30), (100, 100)]
 
     for i in range(len(min_size)):
@@ -52,8 +56,8 @@ def calculate_haar_pr():
                                                   min_size=min_size[i])
 
         # Only run the bottom code if average precision and recall need
-        # to be calculated, i.e. if haar_cascades was called with the
-        # iou_thresholds_all list
+        # to be calculated, i.e. if we used the iou_thresholds_all list;
+        # otherwise comment out
         avg_p = round(sum(precisions) / len(precisions), 3)
         avg_r = round(sum(recalls) / len(recalls), 3)
 
@@ -66,6 +70,9 @@ def calculate_haar_pr():
 
 
 def evaluate_yolov5():
+    """
+    Calculate mIoU for YOLOv5.
+    """
     miou = yolov5(file_names)
     name = "./results/mIoU-yolo-default.txt"
     with open(name, "w") as f:
@@ -73,6 +80,9 @@ def evaluate_yolov5():
 
 
 def calculate_yolo_pr():
+    """
+    Calculate (average) precision and recall for YOLOv5
+    """
     # Read IoU and confidence for each detected box, detected by YOLOv5
     folder = "./yolo_detections"
     file_names = os.listdir(folder)
@@ -91,9 +101,11 @@ def calculate_yolo_pr():
         precisions.append(prec)
         recalls.append(prec)
 
+    # Save the results
     with open(f"./results/{name}", "w") as f:
         for i, t in enumerate(iou_thresholds):
             f.write(f"Threshold: {t:.2f}, precision: {precisions[i]}, recall: {recalls[i]}\n")
+
 
     # Calculate "average precision" and "average recall" for all IoU thresholds
     name = "A" + name
@@ -109,6 +121,7 @@ def calculate_yolo_pr():
         f.write(f"Thresholds: 0:0.01:1, avg precision: {avg_p}, avg recall: {avg_r}\n")
 
 
+# evaluate_haar()
 # calculate_haar_pr()
 # evaluate_yolov5()
-calculate_yolo_pr()
+# calculate_yolo_pr()

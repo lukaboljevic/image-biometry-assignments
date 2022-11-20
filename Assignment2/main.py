@@ -58,8 +58,7 @@ def haar_cascades(file_names, thresholds, scale_factor=1.05,
         for e in right_box:
             ear_boxes.append(e)
 
-        # Calculate IoU for all detected boxes, and determine if
-        # a box is TP or FP
+        # Calculate IoU for all detected boxes.
         img_ious = []
         for i in range(len(ear_boxes)):
             iou = IoU([
@@ -70,6 +69,7 @@ def haar_cascades(file_names, thresholds, scale_factor=1.05,
             ious.append(iou)
             img_ious.append(iou)
 
+        # Go over all thresholds, and for each, evaluate if this image is TP or FP.
         for i, threshold in enumerate(thresholds):
             tp_found = False  # there can only be one TP on a single image for a single threshold
             for iou in img_ious:
