@@ -77,7 +77,7 @@ def update_ui(fig,ax):
 	filestr = f
 	image = cv.cvtColor(cv.imread(f"images/{dirstr}/{filestr}.png"), cv.COLOR_BGR2RGB)
 	mask = cv.imread(f"masks/{dirstr}/{filestr}.png", cv.IMREAD_GRAYSCALE)
-	alpha = 0.3*(mask > 0)
+	alpha = 0.4*(mask > 0)
 	plt.suptitle(f"Subject: {dirstr}, Image: {filestr}")
 	# fig.set_size_inches(16, 7)
 	ax.cla()
@@ -93,6 +93,7 @@ def main():
 	gender_ax = fig.add_axes([0.7, 0.75, 0.15, 0.2])
 	input_gender = RadioButtons(gender_ax, ('Female', 'Male'))
 	input_gender_mapper = {'Female': 'f', 'Male': 'm'}
+	input_gender.set_active(1)
  
 	ethnicity_ax = fig.add_axes([0.7, 0.35, 0.2, 0.4])
 	input_ethnicity = RadioButtons(ethnicity_ax, ('Caucasian (European)', 'Asian (Chinese, Jap, ..)', 'South asian (Indian, ..)', 'Black', 'Middle eastern (Saudi, Iran, ..)', 'Hispanic (Spain, spanish speaking)', 'Other'))
@@ -137,13 +138,13 @@ def main():
 			input_ethnicity_mapper[input_ethnicity.value_selected],
 			side,
 			input_error_mapper[input_error.value_selected])
-		input_error.set_active(0)  # most of the times there's no error
 
 		with open("./annotations.csv", "a", newline='') as f:
 			writer = csv.writer(f, delimiter=";")
 			writer.writerow(new_row)
 
 		update_ui(fig,axs)
+		input_error.set_active(0)  # most of the times there's no error
 		fig.canvas.draw_idle()
 
 	input_submit_left.on_clicked(lambda x: on_submit('l'))
