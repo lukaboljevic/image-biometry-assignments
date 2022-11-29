@@ -14,12 +14,18 @@ column_types = {
 
 
 def get_errors():
+    """
+    Return which subjects have an error (and on what image)
+    """
     df = pd.read_csv("./annotations.csv", sep=";", dtype=column_types)
     df = df[df["Err"].isna() == False]
     return df[["CID", "Image", "Err"]].values
 
 
 def main(error_list):
+    """
+    Show all incorrect mask/image combinations
+    """
     print("#############################")
     print(f"# Number of errors: {len(error_list)}")
     print("#############################\n")

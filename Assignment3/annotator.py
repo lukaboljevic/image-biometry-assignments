@@ -21,6 +21,9 @@ column_types = {
 #############
 
 def checkpoint():
+	"""
+	Return the last annotated image
+	"""
 	if not os.path.exists("./annotations.csv"):
 		return None, None
 
@@ -33,6 +36,9 @@ def checkpoint():
 
 
 def get_files(last_dir=None, last_image=None):
+	"""
+	Yield all files after the last annotated image
+	"""
 	dirs = list(range(151, 181)) + list(range(211, 241)) + list(range(271, 301))
 	# dirs = [151, 152, 211, 212, 271, 300]
 	for dir in dirs:
@@ -49,6 +55,9 @@ def get_files(last_dir=None, last_image=None):
 
 
 def write_data(gender, ethnicity, side, error):
+	"""
+	Print and return the annotation for the current image of a subject
+	"""
 	global dirstr,filestr
 	t = "0" + filestr
 	print(f"{dirstr};{t};{gender};{ethnicity};{side};{error}")
@@ -66,6 +75,9 @@ gen = get_files(last_dir = last_dir, last_image = last_image)
 
 
 def update_ui(fig,ax):
+	"""
+	Draw the next image and mask in line
+	"""
 	global dirstr, filestr
 	try:
 		d, f = next(gen)
@@ -86,6 +98,9 @@ def update_ui(fig,ax):
 
 
 def main():
+	"""
+	Main function - make the "UI" and define the submit logic
+	"""
 	print("CID;Image;Gender;Ethnicity;LR;Err")
 	fig, axs = plt.subplots(1,1)
 	plt.subplots_adjust(right=0.55)
