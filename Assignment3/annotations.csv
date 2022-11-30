@@ -474,7 +474,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 167;010;m;1;l;
 167;011;m;1;l;
 167;012;m;1;l;
-167;013;m;1;r;mask off
+167;013;m;1;r;
 167;014;m;1;l;
 167;015;m;1;l;
 167;016;m;1;l;
@@ -698,7 +698,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 175;004;m;6;l;
 175;005;m;6;r;
 175;006;m;6;l;
-175;007;m;6;l;mask off
+175;007;m;6;l;
 175;008;m;6;r;
 175;009;m;6;l;
 175;010;m;6;r;mask off
@@ -825,7 +825,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 179;020;m;2;r;
 179;021;m;2;r;
 179;022;m;2;l;
-179;023;m;2;r;mask off
+179;023;m;2;r;
 179;024;m;2;r;
 179;025;m;2;l;
 179;026;m;2;r;
@@ -874,7 +874,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 211;014;m;1;l;
 211;015;m;1;l;
 211;016;m;1;l;
-211;017;m;1;l;mask off a bit
+211;017;m;1;l;
 211;018;m;1;r;
 211;019;m;1;l;mask off
 211;020;m;1;l;
@@ -1002,7 +1002,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 216;005;m;4;l;
 216;006;m;4;r;
 216;007;m;4;r;
-216;008;m;4;l;mask off a bit
+216;008;m;4;l;
 216;009;m;4;r;
 216;010;m;4;l;
 216;011;m;4;l;

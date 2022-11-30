@@ -28,8 +28,11 @@ def main():
     gimp = "C:/Applications/Gimp 2/bin/gimp-2.10.exe"
     last_dir = corrected[-1][0]
 
+    total = len(error_list)
+    so_far = len(corrected)
+
     print("##########################")
-    print(f"Corrected: {len(corrected)} / {len(error_list)}")
+    print(f"Corrected: {so_far} / {total}")
     print("##########################\n")
 
     for dir_name, img_name, error in error_list:
@@ -43,6 +46,7 @@ def main():
             # don't open already corrected stuff
             continue
 
+        so_far += 1
         subprocess.call([gimp, f"images/{dir_name}/{temp}.png"], shell=True)
         subprocess.call([gimp, f"masks/{dir_name}/{temp}.png"], shell=True)
 
@@ -50,7 +54,7 @@ def main():
             # just to "group" the output by subject ID
             print()
             last_dir = dir_name
-        input(f"{dir_name}, {temp}, {error} | Press Enter to load new images...")
+        input(f"{dir_name}, {temp}, {error} | {so_far} / {total} | Press Enter to load new images...")
 
 
 if __name__ == "__main__":

@@ -6,3 +6,4 @@ data/
 yolo_detections/
 masks/
 images/
+!**/corrected/masks/
