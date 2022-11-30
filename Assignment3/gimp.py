@@ -33,22 +33,24 @@ def main():
     print("##########################\n")
 
     for dir_name, img_name, error in error_list:
+        temp = img_name[1:]
+
         if error == "wrong subject":
             # we don't need to do anything in this instance
             continue
 
-        if (dir_name, img_name[1:]) in corrected:
+        if (dir_name, temp) in corrected:
             # don't open already corrected stuff
             continue
 
-        subprocess.call([gimp, f"images/{dir_name}/{img_name[1:]}.png"], shell=True)
-        subprocess.call([gimp, f"masks/{dir_name}/{img_name[1:]}.png"], shell=True)
+        subprocess.call([gimp, f"images/{dir_name}/{temp}.png"], shell=True)
+        subprocess.call([gimp, f"masks/{dir_name}/{temp}.png"], shell=True)
 
         if dir_name != last_dir:
             # just to "group" the output by subject ID
             print()
             last_dir = dir_name
-        input(f"{dir_name}, {img_name}, {error} | Press any key to load new images...")
+        input(f"{dir_name}, {temp}, {error} | Press Enter to load new images...")
 
 
 if __name__ == "__main__":
