@@ -1454,7 +1454,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 232;020;m;1;l;two ears
 232;021;m;1;r;
 232;022;m;1;r;
-232;023;m;1;l;two ears, mask off
+232;023;m;1;l;mask off,two ears
 232;024;m;1;r;
 232;025;m;1;l;
 232;026;m;1;r;
@@ -1648,7 +1648,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 240;009;m;1;r;
 240;010;m;1;l;
 240;011;m;1;l;
-240;012;m;1;r;two ears
+240;012;m;1;r;mask off a bit,two ears
 240;013;m;1;l;
 240;014;m;1;l;
 240;015;m;1;r;
@@ -1664,7 +1664,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 271;002;m;1;r;
 271;003;m;1;r;
 271;004;m;1;l;
-271;005;m;1;l;mask off, two ears
+271;005;m;1;l;mask off,two ears
 271;006;m;1;l;
 271;007;m;1;l;
 271;008;m;1;l;
@@ -1783,7 +1783,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 275;012;m;1;l;
 275;013;m;1;l;
 275;014;m;1;l;
-275;015;m;1;r;mask off a bit
+275;015;m;1;r;
 275;016;m;1;r;
 275;017;m;1;r;
 275;018;m;1;l;mask off
@@ -1929,7 +1929,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 280;012;m;4;r;
 280;013;m;4;r;
 280;014;m;1;r;
-280;015;m;1;l;two ears
+280;015;m;1;l;mask off a bit,two ears
 280;016;m;1;l;
 280;017;m;1;l;mask off
 280;018;m;1;r;
@@ -1965,7 +1965,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 281;020;m;1;l;
 281;021;m;1;l;mask off
 281;022;m;1;r;
-281;023;m;1;l;mask off a bit
+281;023;m;1;l;mask off
 281;024;m;1;r;
 281;025;m;1;r;
 281;026;m;1;r;
@@ -2122,7 +2122,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 287;006;m;1;l;
 287;007;m;1;r;
 287;008;m;1;l;
-287;009;m;1;r;mask off a bit, two ears
+287;009;m;1;r;mask off a bit,two ears
 287;010;m;1;l;
 287;011;m;1;r;mask off
 287;012;m;1;l;
@@ -2138,7 +2138,7 @@ CID;Image;Gender;Ethnicity;LR;Err
 287;022;m;1;l;
 287;023;m;1;r;
 287;024;m;1;r;
-287;025;m;1;l;two ears
+287;025;m;1;l;mask off a bit,two ears
 287;026;m;1;l;two ears
 287;027;m;1;l;
 288;001;m;1;l;
@@ -2296,10 +2296,10 @@ CID;Image;Gender;Ethnicity;LR;Err
 293;008;m;1;r;
 293;009;m;1;r;
 293;010;m;1;r;
-293;011;m;1;l;mask off, two ears
+293;011;m;1;l;mask off,two ears
 293;012;m;1;r;
 293;013;m;1;l;
-293;014;m;1;l;two ears
+293;014;m;1;l;mask off,two ears
 293;015;m;1;r;
 293;016;m;1;l;
 293;017;m;1;r;

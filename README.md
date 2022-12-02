@@ -73,3 +73,5 @@ The purpose of `annotator.py` is to load images one by one in a `matplotlib` "UI
 File `errors.py` is a simple script that loads all incorrect images and masks. This is mostly for "double checking" if the assigned error is assigned for a reason, to put it what way.
 
 `gimp.py` is a simple script that loads all incorrect images and masks in GIMP, so that they can be fixed. Note that the path to the GIMP executable may not be the same as the one that's there right now. This script, like `annotator.py`, loads incorrect images/masks starting from the last corrected ones.
+
+Corrected images and masks are found under `Assignment3/corrected/`. I should have added the masks to a zip, but it is what it is. The corrected images are all found inside `images.zip`.
