@@ -2,7 +2,7 @@
 
 Dataset for this assignment is the CASIA (I think V1) iris image database, which can be downloaded from [here](https://www.dropbox.com/s/uc1fokmab5av91h/CASIA.zip?dl=0). It should be placed in the root of this folder.
 
-The code was cloned from [this repo](https://github.com/Th3nn3ss/python-iris-recognition), and renamed to `iris-recognition`. Before trying to run any code found there, be sure to activate a separate virtual environment (I named it `iris-venv`), as the package versions for that code were outdated by some 2.5 years (at the time of writing this) - and I didn't want to mess around with updating them and fixing all errors that arise from that. Commands for enabling a new virtual env (assuming current directory is **this folder**):
+The code was cloned from [this repo](https://github.com/Th3nn3ss/python-iris-recognition), and renamed to `iris-recognition`. Before trying to run any code found there, be sure to activate a separate virtual environment (I named it `iris-venv`), as the package versions for that code were outdated by some 2.5 years (at the time of writing this) - and I didn't want to mess around with updating all of them and fixing all errors that arise from that. Only thing I had to update were `Pillow` to 9.2.0 and `numpy` to 1.22 due to some security issues. Commands for enabling a new virtual env (assuming current directory is **this folder**):
 
 ```
 cd iris-recognition

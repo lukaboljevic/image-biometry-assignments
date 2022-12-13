@@ -43,19 +43,19 @@ def main():
 
     
     # Matching
-    result = matching(template, mask, args.temps, args.thres)
+    result_dict = matching(template, mask, args.temps, [args.thres])
 
 
-    if result == -1:
+    if result_dict == -1:
         print('>>> Database empty - no enrolled templates.')
 
-    elif result == 0:
+    elif not len(result_dict[args.thres]):
         print('>>> No template matched.')
 
     else:
         print(f">>> Subject {subject} verified.\n" +
-              f">>> {len(result)} templates matched (descending reliability):")
-        for i, res in enumerate(result):
+              f">>> {len(result_dict[args.thres])} templates matched (descending reliability):")
+        for i, res in enumerate(result_dict[args.thres]):
             print(f"\t({i+1}) Subject: {res[0:3]}, template: {res}")
 
             # To return the path to the original file
