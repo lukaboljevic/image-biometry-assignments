@@ -1,4 +1,5 @@
 .venv/
+.iris-venv/
 .vscode/
 __pycache__/
 awe/
@@ -7,3 +8,5 @@ yolo_detections/
 masks/
 images/
 !**/corrected/masks/
+CASIA/
+templates/
