@@ -11,7 +11,7 @@ source ./.iris-venv/Scripts/activate  # or source ./.iris-venv/bin/activate if o
 pip install -r requirements.txt
 ```
 
-Nothing regarding the pipeline was changed from the original, other than renaming and removing irrelevant files, changing the necessary paths, changing some variable names and std outputs, and changing the return value of the matching process, found in `iris-recognition/fnc/matching.py`. The return value is now a dictionary, which for each matching threshold contains a list of names to all templates the query template matched with.
+Nothing regarding the pipeline was changed from the original, other than renaming and removing irrelevant files, changing the necessary paths, changing some variable names and std outputs, and changing the return value of the matching process, found in `iris-recognition/fnc/matching.py`. The return value is now a dictionary, which for each matching threshold contains a list of all templates the query template matched with.
 
 Two scripts were also added, namely `draw_segmented.py`, and `unenrolled_verify.py`. The former just shows the segmented iris and pupil, as well as the noise mask for an input image. The latter tests pipeline performance on all unenrolled images, and reports rank-1 and rank-5 accuracies for various thresholds. The results of those tests are found under `iris-recognition/accuracies`. The prefix `testOn1` means that the testing was done on unenrolled images that match the path `CASIA/*/1/*.png`, while the enrolled images were those that match path `CASIA/*/2/*.png`. Similar applies for prefix `testOn2`. Prior to running `unenrolled_verify.py`, `enroll_casia.py` needs to be ran.
 
