@@ -9,8 +9,8 @@ width = 0.25
 scikit = [0.348, 0.124]
 mine = [0.355, 0.134]
 
-rects1 = plt.bar(x - width/2, scikit, width, label="LBP")
-rects2 = plt.bar(x + width/2, mine, width, label="Uniform LBP")
+rects1 = plt.bar(x - width/2, scikit, width, label="Scikit LBP implem.")
+rects2 = plt.bar(x + width/2, mine, width, label="Our LBP implem.")
 plt.ylabel("Rank-1 accuracy")
 plt.title("Comparing our implementation against Scikit")
 plt.xticks(x, x_labels)
